@@ -14,4 +14,9 @@
         android:labelFor="@id/create_database"
         android:text="@string/but1"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_data"
+        />
 </LinearLayout>
