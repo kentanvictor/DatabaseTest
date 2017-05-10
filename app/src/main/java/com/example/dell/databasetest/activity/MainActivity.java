@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
                 dbHelper.getWritableDatabase();
             }
         });
+        //创建数据库
         Button addData = (Button) findViewById(R.id.add_data);
         addData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,5 +47,17 @@ public class MainActivity extends AppCompatActivity {
                 db.insert("Book",null,values);//插入第二条数据
             }
         });
+        //添加数据
+        Button updateData = (Button) findViewById(R.id.update_data);
+        updateData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put("price",10.99);
+                db.update("Book",values,"name = ?",new String[] {"The Da Vinci Code"});
+            }
+        });
+        //更新数据
     }
 }
