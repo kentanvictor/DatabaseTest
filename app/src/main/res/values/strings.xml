@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DatabaseTest</string>
+    <string name="but1">Create database</string>
 </resources>
