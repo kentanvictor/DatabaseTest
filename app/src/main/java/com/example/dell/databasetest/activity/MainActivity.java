@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
-                db.delete("Book","page > ?",new String[] {"500"});
+                db.delete("Book","page > ?",new String[] {"500"});//第二、第三个参数来指定仅删除那些页数超过500页的书
             }
         });
         //删除数据
