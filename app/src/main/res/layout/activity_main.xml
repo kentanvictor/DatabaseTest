@@ -31,4 +31,10 @@
         android:text="@string/but4"
         android:id="@+id/delete_data"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/query_data"
+        android:text="@string/but5"
+        />
 </LinearLayout>

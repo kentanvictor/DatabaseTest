@@ -1,9 +1,11 @@
 package com.example.dell.databasetest.activity;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dbHelper = new MyDatabaseHelper(this,"BookStore.db",null ,2);//构建MyDatabaseHelper对象
+        dbHelper = new MyDatabaseHelper(this,"BookStore.db",null ,5);//构建MyDatabaseHelper对象
         //上面对应的是，创建一个名字为"BookStore.db"并且版本号为1的数据库文件
         Button createDatabase = (Button) findViewById(R.id.create_database);
         createDatabase.setOnClickListener(new View.OnClickListener() {
@@ -69,9 +71,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
-                db.delete("Book","page > ?",new String[] {"500"});//第二、第三个参数来指定仅删除那些页数超过500页的书
+                db.delete("Book","pages > ?",new String[] {"500"});//第二、第三个参数来指定仅删除那些页数超过500页的书
             }
         });
         //删除数据
+        Button queryButton = (Button) findViewById(R.id.query_data);
+        queryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                //查询Book表中所有的数据
+                Cursor cursor = db.query("Book",null,null,null,null,null,null);
+                if(cursor.moveToFirst())
+                {
+                    do {
+                        //遍历Cursor对象，取出数据并打印
+                        String name = cursor.getString(cursor.getColumnIndex("name"));
+                        String author = cursor.getString(cursor.getColumnIndex("author"));
+                        int pages = cursor.getInt(cursor.getColumnIndex("pages"));
+                        double price = cursor.getDouble(cursor.getColumnIndex("price"));
+                        Log.d("MainActivity","book name is" + name);
+                        Log.d("MainActivity","book author is" + author);
+                        Log.d("MainActivity","book pages is" + pages);
+                        Log.d("MainActivity","book price is" + price);
+                    }while(cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        });
+        //对数据进行查询工作
     }
 }
