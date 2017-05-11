@@ -11,25 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/create_database"
-        android:labelFor="@id/create_database"
         android:text="@string/but1"
         />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/add_data"
-        android:labelFor="@id/add_data"
         android:text="@string/but2"
         />
     <Button
-        android:labelFor="@id/update_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/update_data"
         android:text="@string/but3"
         />
     <Button
-        android:labelFor="@id/delete_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/but4"

@@ -54,10 +54,24 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 ContentValues values = new ContentValues();
-                values.put("price",10.99);
+                values.put("price",10.99);//只想更新价格这一数据
                 db.update("Book",values,"name = ?",new String[] {"The Da Vinci Code"});
+                /**
+                * 第三个参数对应的是SQL语句的where部分
+                * 表示更新所有name等于?的行，而?是一个占位符
+                * 可以通过第四个参数提供的一个字符串数组为第三个参数中的每个占位符指定相应的内容
+                * */
             }
         });
         //更新数据
+        Button deleteButton = (Button) findViewById(R.id.delete_data);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                db.delete("Book","page > ?",new String[] {"500"});
+            }
+        });
+        //删除数据
     }
 }
