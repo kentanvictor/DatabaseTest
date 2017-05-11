@@ -81,8 +81,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 //查询Book表中所有的数据
-                Cursor cursor = db.query("Book",null,null,null,null,null,null);
+                Cursor cursor = db.query("Book",null,null,null,null,null,null);//利用query()方法查询数据
                 if(cursor.moveToFirst())
+                    /*
+                    * 调用moveToFirst()方法将数据的指针移动到第一行
+                    * */
                 {
                     do {
                         //遍历Cursor对象，取出数据并打印
@@ -90,10 +93,14 @@ public class MainActivity extends AppCompatActivity {
                         String author = cursor.getString(cursor.getColumnIndex("author"));
                         int pages = cursor.getInt(cursor.getColumnIndex("pages"));
                         double price = cursor.getDouble(cursor.getColumnIndex("price"));
-                        Log.d("MainActivity","book name is" + name);
-                        Log.d("MainActivity","book author is" + author);
-                        Log.d("MainActivity","book pages is" + pages);
-                        Log.d("MainActivity","book price is" + price);
+                        /*
+                        * 通过Cursor的getColumnIndex()方法获取到某一列在表中对应的位置索引
+                        * 然后将这个索引传入到相应的取值方法中，就可以得到数据库中读取到的数据了
+                        * */
+                        Log.d("MainActivity","book name is " + name);
+                        Log.d("MainActivity","book author is " + author);
+                        Log.d("MainActivity","book pages is " + pages);
+                        Log.d("MainActivity","book price is " + price);
                     }while(cursor.moveToNext());
                 }
                 cursor.close();
