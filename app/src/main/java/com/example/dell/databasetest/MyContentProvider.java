@@ -52,9 +52,18 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        // TODO: Implement this to handle requests for the MIME type of the data
-        // at the given URI.
-        throw new UnsupportedOperationException("Not yet implemented");
+        switch (uriMatcher.match(uri))
+        {
+            case BOOK_DIR:
+                return "vnd.android.cursor.dir/vnd.com.example.dell.databasetest.privider.book";
+            case BOOK_ITEM:
+                return "vnd.android.cursor.item/vnd.com.example.dell.databasetest.privider.book";
+            case CATEGORY_DIR:
+                return "vnd.android.cursor.dir/vnd.com.example.dell.databasetest.privider.category";
+            case CATEGORY_ITEM:
+                return "vnd.android.cursor.item/vnd.com.example.dell.databasetest.privider.category";
+        }
+        return null;
     }
 
     @Override
