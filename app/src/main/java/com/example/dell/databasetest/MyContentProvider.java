@@ -25,8 +25,29 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        //删除数据
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int deletedRows = 0;
+        switch (uriMatcher.match(uri))
+        {
+            case BOOK_DIR:
+                deletedRows = db.delete("Book",selection,selectionArgs);
+                break;
+            case BOOK_ITEM:
+                String bookId = uri.getPathSegments().get(1);
+                deletedRows = db.delete("Book","id = ?",new String[] {bookId});
+                break;
+            case CATEGORY_DIR:
+                deletedRows = db.delete("Category",selection,selectionArgs);
+                break;
+            case CATEGORY_ITEM:
+                String categoryId = uri.getPathSegments().get(1);
+                deletedRows = db.delete("Category","id = ?",new String[] {categoryId});
+                break;
+            default:
+                break;
+        }
+        return deletedRows;
     }
 
     @Override
@@ -124,6 +145,5 @@ public class MyContentProvider extends ContentProvider {
                 break;
         }
         return updatedRows;
-
     }
 }
