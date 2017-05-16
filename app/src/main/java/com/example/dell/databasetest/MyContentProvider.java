@@ -39,7 +39,26 @@ public class MyContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         // TODO: Implement this to handle requests to insert a new row.
-        throw new UnsupportedOperationException("Not yet implemented");
+        /*throw new UnsupportedOperationException("Not yet implemented");*/
+        //添加数据
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Uri uriReturn = null;
+        switch (uriMatcher.match(uri))
+        {
+            case BOOK_DIR:
+            case BOOK_ITEM:
+                long newBookId = db.insert("Book",null,values);
+                uriReturn = Uri.parse("content://"+AUTHORITY+"/Book/"+newBookId);
+                break;
+            case CATEGORY_DIR:
+            case CATEGORY_ITEM:
+                long newCategoryId = db.insert("Category",null,values);
+                uriReturn = Uri.parse("content://"+AUTHORITY+"/Category/"+newCategoryId);
+                break;
+            default:
+                break;
+        }
+        return uriReturn;
     }
 
     @Override
@@ -82,7 +101,7 @@ public class MyContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-        // TODO: Implement this to handle requests to update one or more rows.
+       // TODO: Implement this to handle requests to update one or more rows.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 }
