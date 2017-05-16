@@ -101,7 +101,29 @@ public class MyContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-       // TODO: Implement this to handle requests to update one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        //更新数据
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int updatedRows = 0;
+        switch (uriMatcher.match(uri))
+        {
+            case BOOK_DIR:
+                updatedRows = db.update("Book",values,selection,selectionArgs);
+                break;
+            case BOOK_ITEM:
+                String bookId = uri.getPathSegments().get(1);
+                updatedRows = db.update("Book",values,"id = ?",new String[] {bookId});
+                break;
+            case CATEGORY_DIR:
+                updatedRows = db.update("Category",values,selection,selectionArgs);
+                break;
+            case CATEGORY_ITEM:
+                 String categoryId = uri.getPathSegments().get(1);
+                updatedRows = db.update("Category",values,"id = ?",new String[] {categoryId});
+                break;
+            default:
+                break;
+        }
+        return updatedRows;
+
     }
 }
