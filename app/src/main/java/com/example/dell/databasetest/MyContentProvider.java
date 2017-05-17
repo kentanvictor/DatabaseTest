@@ -8,10 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 public class MyContentProvider extends ContentProvider {
-    public static final int BOOK_DIR = 0;
-    public static final int BOOK_ITEM = 1;
-    public static final int CATEGORY_DIR = 2;
-    public static final int CATEGORY_ITEM = 3;
+    public static final int BOOK_DIR = 0;//访问Book表中所有数据
+    public static final int BOOK_ITEM = 1;//访问Book表中单例数据
+    public static final int CATEGORY_DIR = 2;//访问Category表中所有数据
+    public static final int CATEGORY_ITEM = 3;//访问Category表中单例数据
+    //定义4个常量
     public static final String AUTHORITY = "com.example.dell.provider";
     private static UriMatcher uriMatcher;
     private MyDatabaseHelper dbHelper;
@@ -21,7 +22,8 @@ public class MyContentProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY,"book/#",BOOK_ITEM);
         uriMatcher.addURI(AUTHORITY,"category",CATEGORY_DIR);
         uriMatcher.addURI(AUTHORITY,"category",CATEGORY_ITEM);
-    }
+    }//在静态代码块中进行初始化的操作
+    //将期望匹配的几种URI格式匹配进去
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
@@ -94,29 +96,37 @@ public class MyContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         // TODO: Implement this to initialize your content provider on startup.
-        dbHelper = new MyDatabaseHelper(getContext(),"BookStore.db",null,2);
-        return true;
+        dbHelper = new MyDatabaseHelper(getContext(),"BookStore.db",null,2);//创建了一个MyDatabaseHelper的实例
+        return true;//返回TRUE表示内容提供器初始化成功
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        // TODO: Implement this to handle query requests from clients.
         //查询数据
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();//获取SQliteDatabase的实例
         Cursor cursor = null;
-        switch (uriMatcher.match(uri))
+        switch (uriMatcher.match(uri))//根据传入的URI来进行判断用户想要访问哪一张表
         {
             case BOOK_DIR:
                 cursor = db.query("Book",projection,selection,selectionArgs,null,
-                        null,null,sortOrder);
+                        null,null,sortOrder);//然后调用SQLiteDatabase的query()方法进行查询
                 break;
             case BOOK_ITEM:
                 String bookId = uri.getPathSegments().get(1);
+                /**
+                 * 注意：这里调用了URI对象的getPathSegments()方法
+                 * 它会将内容URI权限之后的部分以“/”符号进行分割
+                 * 把分割之后的结果放入到一个字符串列表中，那个列表的第0个位置存放的就是路径
+                 * 第1个位置的就是id了
+                * */
                 cursor = db.query("Book",projection,"id = ?",new String[]{bookId},null,null,sortOrder);
                 break;
             case CATEGORY_DIR:
                 cursor = db.query("Category",projection,selection,selectionArgs,null,null,sortOrder);
+                /**
+                 * 得到id之后，再通过selection和selectionArgs参数进行约束
+                * */
                 break;
             case CATEGORY_ITEM:
                 String categoryId = uri.getPathSegments().get(1);
@@ -125,7 +135,7 @@ public class MyContentProvider extends ContentProvider {
             default:
                 break;
         }
-        return cursor;
+        return cursor;//然后返回cursor对象就好了
     }
 
     @Override
