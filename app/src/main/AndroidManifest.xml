@@ -20,7 +20,15 @@
             android:name=".MyContentProvider"
             android:authorities="com.example.dell.provider"
             android:enabled="true"
-            android:exported="true"></provider>
+            android:exported="true">
+        </provider>
     </application>
 
 </manifest>
+<!--
+<provider>标签用来对DatabaseProvider这个内容器进行注册
+android:name属性指定了DatabaseProvider的类名
+android:authorities属性指定了DatabaseProvider的authority
+而enabled和exported属性则是根据勾选的状态自动生成的
+这里表示DatabaseProvider被其他应用程序访问
+-->
