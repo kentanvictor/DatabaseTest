@@ -69,17 +69,22 @@ public class MyContentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        // TODO: Implement this to handle requests to insert a new row.
-        /*throw new UnsupportedOperationException("Not yet implemented");*/
+    public Uri insert(Uri uri, ContentValues values)
+    /**
+     * 注意：insert()方法要求返回一个能够表示这条新增数据的URI
+     * 所以我们还需要调用URI.parse()方法来将一个内容URI解析为URI对象
+     * 当然
+     * 这个内容URI是以新增数据的id结尾的
+    * */
+    {
         //添加数据
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();//获取SQLiteDatabase的实例
         Uri uriReturn = null;
-        switch (uriMatcher.match(uri))
+        switch (uriMatcher.match(uri))//利用URI参数来判断用户想要往哪一张表里面添加数据
         {
             case BOOK_DIR:
             case BOOK_ITEM:
-                long newBookId = db.insert("Book",null,values);
+                long newBookId = db.insert("Book",null,values);//然后再调用SQLiteDatabase的insert()方法进行添加数据
                 uriReturn = Uri.parse("content://"+AUTHORITY+"/Book/"+newBookId);
                 break;
             case CATEGORY_DIR:
@@ -142,12 +147,12 @@ public class MyContentProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         //更新数据
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int updatedRows = 0;
-        switch (uriMatcher.match(uri))
+        SQLiteDatabase db = dbHelper.getWritableDatabase();//获取SQliteDatabase的实例
+        int updatedRows = 0;//要求返回的是一个int类型的值
+        switch (uriMatcher.match(uri))//根据传入的URI来进行判断用户想要访问哪一张表
         {
             case BOOK_DIR:
-                updatedRows = db.update("Book",values,selection,selectionArgs);
+                updatedRows = db.update("Book",values,selection,selectionArgs);//再调用SQLiteDatabase的update方法
                 break;
             case BOOK_ITEM:
                 String bookId = uri.getPathSegments().get(1);
