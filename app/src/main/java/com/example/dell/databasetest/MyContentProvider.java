@@ -28,9 +28,9 @@ public class MyContentProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         //删除数据
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();//获取SQliteDatabase的实例
         int deletedRows = 0;
-        switch (uriMatcher.match(uri))
+        switch (uriMatcher.match(uri))//利用URI参数来判断用户想要往哪一张表里面添加数据
         {
             case BOOK_DIR:
                 deletedRows = db.delete("Book",selection,selectionArgs);
